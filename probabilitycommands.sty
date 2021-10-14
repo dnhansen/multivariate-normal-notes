@@ -1,0 +1,37 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{probabilitycommands}[2021/10/12 Basic mathematics commands]
+
+% Packages
+\RequirePackage{mathtools}
+
+% ====================== Random variables =====================
+
+% Random variable
+\newcommand{\rvar}[1]{\mathsf{#1}}
+
+% Mean
+\DeclarePairedDelimiter{\meanaux}{[}{]}
+\newcommand{\mean}[1]{\mathbb{E}\meanaux{#1}}
+
+% Variance
+\DeclarePairedDelimiter{\varaux}{[}{]}
+\newcommand{\var}[1]{\operatorname{Var}\varaux{#1}}
+
+% Distribution
+\newcommand{\dist}{\sim}
+
+
+% ======================= Distributions =======================
+
+% Normal distribution
+\DeclarePairedDelimiterX{\normaldistaux}[2]{(}{)}{#1,#2}
+\newcommand\normaldist[3][]{%
+    \ifstrempty{#1}{%
+        N\normaldistaux{#2}{#3}
+    }{%
+        N_{#1}\normaldistaux{#2}{#3}
+    }%
+}
+
+
+\endinput

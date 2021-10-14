@@ -1,0 +1,29 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{articlesectionstyle}[2021/10/14 Article section style]
+
+%==============================================================
+%  SECTION TITLES
+%==============================================================
+
+% Chapter style section-like
+\makeatletter
+\makechapterstyle{articlestyle}{%
+  \chapterstyle{default}
+  \setlength{\beforechapskip}{3.5ex \@plus 1ex \@minus .2ex}
+  \renewcommand*{\chapterheadstart}{\vspace{\beforechapskip}}
+  \setlength{\afterchapskip}{2.3ex \@plus .2ex}
+  \renewcommand{\printchaptername}{}
+  \renewcommand{\chapternamenum}{}
+  \renewcommand{\chaptitlefont}{\normalfont\Large}
+  \renewcommand{\chapnumfont}{\chaptitlefont}
+  \renewcommand{\printchapternum}{\chapnumfont \thechapter~~{\normalsize\textbullet}~~}%\quad}
+  \renewcommand{\afterchapternum}{}}
+\makeatother
+
+\chapterstyle{articlestyle}
+
+% Section titles
+\setsecheadstyle{\normalfont\large\itshape}
+\setsecnumformat{\csname the#1\endcsname.~~}
+
+\endinput

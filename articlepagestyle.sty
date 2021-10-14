@@ -1,0 +1,25 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{articlepagestyle}[2021/10/14 Article page style]
+
+\nouppercaseheads
+
+\makepagestyle{articlestyle}
+\makeoddhead{articlestyle}%
+    {\small\itshape\rightmark}%
+    {}%
+    {\small\itshape\thepage}
+\makeoddfoot{articlestyle}{}{}{}
+\makepsmarks{articlestyle}{
+    %\createmark{<section>}{<sides>}{[show]/[no]number}{<before number>}{<after number>}
+	\createmark{chapter}    {both} {shownumber}{}{. \ }
+	\createmark{section}    {right}{shownumber}{}{. \ }
+	\createplainmark{toc}   {both} {\contentsname}
+	\createplainmark{lof}   {both} {\listfigurename}
+	\createplainmark{lot}   {both} {\listtablename}
+	\createplainmark{bib}   {both} {\bibname}
+	\createplainmark{index} {both} {\indexname}
+}
+
+\pagestyle{articlestyle}
+
+\endinput

@@ -1,0 +1,131 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{basicmathcommands}[2021/10/12 Basic mathematics commands]
+
+% Packages
+\RequirePackage{mathtools}
+\RequirePackage{bm}
+
+
+% ======================= Formatting =======================
+
+% Alternative overline (daleif p. 64 + email correspondence)
+\DeclareRobustCommand\altoverline[2][0.8]{%
+\mathmakebox[\widthof{\ensuremath{#2}}][c]{\overline{\mathmakebox[\widthof{\ensuremath{#2}}*\real{#1}][c]{#2}}}}
+
+
+% ================= Symbols and operators ==================
+
+% Constants
+\DeclareMathOperator{\e}{\mathrm{e}}
+
+% Greek letters
+\renewcommand{\epsilon}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+
+% Definitions
+\newcommand{\defn}{\coloneqq}
+\newcommand{\nfed}{\eqqcolon}
+
+
+% ======================= Set theory =======================
+
+% Set builder notation
+\DeclarePairedDelimiterX{\set}[2]{\lbrace}{\rbrace}{#1\;\delimsize\vert\;#2} % Daleif uses \, on page 66
+
+% Products
+\let\oldprod\prod
+\renewcommand*\prod\times
+\newcommand*\bigprod\oldprod
+
+% Unions and intersections
+\newcommand*\union\cup
+\newcommand*\intersect\cap
+% New bigcup, bigcap, but use mathchoice to make sure it works between math styles (inline, display, etc.)
+% \bigunion has to use \DeclareMathOperator and not \newcommand! Otherwise the limits don't work properly.
+\DeclareMathOperator*{\smallbigcup}{\textstyle\bigcup}
+\DeclareMathOperator*{\bigunion}{\mathchoice
+	{\smallbigcup}%
+	{\bigcup}%
+	{\bigcup}%
+	{\bigcup}%
+}
+\DeclareMathOperator*{\smallbigcap}{\textstyle\bigcap}
+\DeclareMathOperator*{\bigintersect}{\mathchoice
+	{\smallbigcap}%
+	{\bigcap}%
+	{\bigcap}%
+	{\bigcap}%
+}
+
+% Symmetric difference
+\newcommand{\symdiff}{\mathbin{\Delta}}
+
+
+% ========================= Algebra =========================
+
+% Miscellaneous
+\newcommand\inv{^{-1}}
+
+% Lattice operations
+\newcommand{\meet}{\land}
+\newcommand{\join}{\lor}
+
+
+% ====================== Miscellaneous ======================
+
+% Logic
+\renewcommand{\implies}{\Rightarrow}
+
+% Functions
+\DeclareMathOperator{\id}{id}
+\newcommand*{\indicator}[1]{\mathbf{1}_{#1}}
+
+% Number sets
+\newcommand{\naturals}{\mathbb{N}}
+\newcommand{\ints}{\mathbb{Z}}
+\newcommand{\rationals}{\mathbb{Q}}
+\newcommand{\reals}{\mathbb{R}}
+\newcommand{\complex}{\mathbb{C}}
+
+\newcommand{\setN}{\naturals}
+\newcommand{\setZ}{\ints}
+\newcommand{\setQ}{\rationals}
+\newcommand{\setR}{\reals}
+\newcommand{\setC}{\complex}
+
+% Complex numbers
+\newcommand{\dotlessi}{\i}
+\newcommand{\iu}{\operatorname{i}}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\conj}[1]{\altoverline{#1}}
+
+
+
+
+
+
+
+
+
+% Vectors
+\renewcommand{\vec}[1]{\bm{#1}}
+\newcommand*\dotp\cdot
+\newcommand*\crossp\times
+
+% Norms and inner products
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiterX{\inner}[2]{\langle}{\rangle}{#1,#2}
+
+% Calculus
+\newcommand*\dif{\mathop{}\!\mathrm{d}}
+
+
+\endinput
+
+% Issues:
+% - Need to implement big meet and join.
+% - Need to implement different types of arrows, monos and epis.
+% - Implement isomorphism symbol \cong.
+% - Factor out linear algebra and calculus + more calculus commands like derivatives.

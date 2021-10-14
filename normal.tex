@@ -1,0 +1,157 @@
+% Document setup
+\documentclass[article, a4paper, 11pt, oneside]{memoir}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[UKenglish]{babel}
+
+% Document info
+\newcommand\doctitle{Multivariate normal distribution}
+\newcommand\docauthor{Danny Nygård Hansen}
+
+% Formatting and layout
+\usepackage[autostyle]{csquotes}
+\usepackage[final]{microtype}
+\usepackage{xcolor}
+\frenchspacing
+\usepackage{articlepagestyle}
+\usepackage{articlesectionstyle}
+
+% Fonts
+\usepackage[largesmallcaps]{kpfonts}
+\DeclareSymbolFontAlphabet{\mathrm}{operators} % https://tex.stackexchange.com/questions/40874/kpfonts-siunitx-and-math-alphabets
+\linespread{1.06}
+\let\mathfrak\undefined
+\usepackage{eufrak}
+\usepackage{inconsolata}
+\usepackage{amssymb}
+
+% Hyperlinks
+\usepackage{hyperref}
+\definecolor{linkcolor}{HTML}{4f4fa3}
+\hypersetup{%
+	pdftitle=\doctitle,
+	pdfauthor=\docauthor,
+	colorlinks,
+	linkcolor=linkcolor,
+	citecolor=linkcolor,
+	urlcolor=linkcolor,
+	bookmarksnumbered=true
+}
+
+% Equation numbering
+\numberwithin{equation}{chapter}
+
+% Footnotes
+\footmarkstyle{\textsuperscript{#1}\hspace{0.25em}}
+
+% Mathematics
+\usepackage{basicmathcommands}
+\usepackage{framedtheorems}
+\usepackage{probabilitycommands}
+
+% Lists
+\usepackage{enumitem}
+\setenumerate[0]{label=\normalfont(\arabic*)}
+
+% Title
+\title{\doctitle}
+\author{\docauthor}
+
+
+\newcommand{\mat}{\mathrm{M}}
+\newcommand{\trans}{\top}
+
+\begin{document}
+
+\maketitle
+
+
+
+% \noindent Throughout we let $(\Omega, \calF, \P)$ denote a fixed probability space.
+
+\begin{definition}[Multivariate normal distribution]
+    An $n$-dimensional random vector $\rvar X$ follows an $n$-variate normal distribution if its characteristic function is given by
+    %
+    \begin{equation*}
+        \phi_{\rvar X}(t)
+            = \exp \Bigl( \iu \inner{t}{\mu} - \frac{1}{2} t^\trans \Sigma t \Bigr),
+            \qquad t \in \reals^n,
+    \end{equation*}
+    %
+    for some $\mu \in \reals^n$ and an $n \times n$ positive semidefinite matrix $\Sigma$. In this case we write $\rvar{X} \dist \normaldist[n]{\mu}{\Sigma}$.
+\end{definition}
+%
+Recall that a $\Sigma$ is said to be positive semidefinite if $t^\trans \Sigma t \geq 0$ for all $t \in \reals^n$.
+
+
+
+
+\begin{proposition}
+    Let
+        $\rvar X \dist \normaldist[n]{\mu}{\Sigma}$,
+        $a \in \reals^n$ and
+        $B \in \mat_{p \times n}(\reals)$.
+    Then
+        $a + B \rvar X \dist \normaldist[n]{a + B\mu}{B \Sigma B^\trans}$.
+    In particular,
+        $\inner{t}{\rvar X} \dist \normaldist{
+            \inner{t}{\mu}
+        }{
+            t^\trans \Sigma t
+        }$
+    for all $t \in \reals^n$.
+
+    Conversely, if $\rvar X$ is an $n$-dimensional random variable, and $\inner{t}{\rvar X}$ is normally distributed for all $t \in \reals^n$, then $\rvar X$ is $n$-variate normally distributed. In fact, if there exist $\mu \in \reals^n$ and $\Sigma \in \mat_n(\reals)$ such that
+        $\inner{t}{\rvar X} \dist \normaldist{
+            \inner{t}{\mu}
+        }{
+            t^\trans \Sigma t
+        }$
+    for all $t \in \reals^n$, then $\rvar X \dist \normaldist[n]{\mu}{\Sigma}$.
+\end{proposition}
+
+\begin{proof}
+    First notice that $B \Sigma B^\trans$ is clearly positive semidefinite since $\Sigma$ is. Furthermore,
+    %
+    \begin{align*}
+        \phi_{a+B \rvar X}(s)
+            &= \e^{\iu \inner{s}{a}} \exp \Bigl( \iu \inner{B^\trans s}{\mu} - \frac{1}{2} (B^\trans s)^\trans \Sigma (B^\trans s) \Bigr) \\
+            &= \exp \Bigl( \iu \inner{s}{a + B\mu} - \frac{1}{2} s^\trans (B \Sigma B^\trans) s \Bigr)
+    \end{align*}
+    %
+    for all $s \in \reals^n$ as desired.
+
+    For the converse direction, first assume that $\inner{t}{\rvar X}$ is normally distributed for all $t \in \reals^n$. In particular, the coordinates $\rvar X_1, \ldots, \rvar X_n$ are normally distributed, and hence $\rvar X$ has a well-defined mean vector $\mu$ and covariance matrix $\Sigma$. Furthermore, we have $\mean{\inner{t}{\rvar X}} = \inner{t}{\mu}$ and $\var{\inner{t}{\rvar X}} = t^\trans \Sigma t$. (See Andersen.) It follows that
+    %
+    \begin{equation*}
+        \phi_{\rvar X}(t)
+            = \phi_{\inner{t}{\rvar X}}(1)
+            = \exp \Bigl( \iu \inner{t}{\mu} - \frac{1}{2} t^\trans \Sigma t \Bigr)
+    \end{equation*}
+    %
+    for $t \in \reals^n$. The final claim follows similarly.
+\end{proof}
+
+
+\begin{corollary}
+    If $\rvar X \dist \normaldist[n]{\mu}{\Sigma}$, then $\mu$ is the mean vector and $\Sigma$ the covariance matrix for $\rvar X$.
+\end{corollary}
+
+\begin{remark}
+    Let $\mu \in \reals^n$, and let $\Sigma \in \mat_n(\reals)$ be positive semidefinite. We show that there exists a random variable $\rvar X$ with distribution $\normaldist[n]{\mu}{\Sigma}$.
+
+    First let $\Sigma^{1/2} \in \mat_n(\reals)$ be the (unique) positive semidefinite matrix such that $\Sigma = \Sigma^{1/2} \Sigma^{1/2}$. We might construct $\Sigma^{1/2}$ as follows: Since $\Sigma$ is symmetric there exists a diagonal matrix $D$ and an orthogonal matrix $Q$ such that $\Sigma = Q^\trans DQ$. Since $\Sigma$ is positive semidefinite, the entries in $D$ are non-negative. Call the diagonal entries $\lambda_1, \ldots, \lambda_n$. Let $D^{1/2}$ be the diagonal matrix whose entries along the diagonal are $\sqrt{\lambda_1}, \ldots, \sqrt{\lambda_n}$, and let $\Sigma^{1/2} = Q^\trans D^{1/2} Q$.
+
+    Now let $\rvar U_1, \ldots \rvar U_n$ be i.i.d. $N(0,1)$-distributed variables, and let $\rvar U = (\rvar U_1, \ldots, \rvar U_n)$. For $t = (t_1, \ldots, t_n) \in \reals^n$, the characteristic function of $\rvar U$ is then
+    %
+    \begin{equation*}
+        \phi_{\rvar U}(t)
+            = \bigprod_{j=1}^n \phi_{\rvar U_j}(t_j)
+            = \bigprod_{j=1}^n \exp \Bigl( - \frac{1}{2} t_j^2 \Bigr)
+            = \exp \Bigl( - \frac{1}{2} t^\trans I t \Bigr),
+    \end{equation*}
+    %
+    where $I$ is the identity matrix. It follows that $\rvar U \dist \normaldist[n]{0}{I}$. Letting $\rvar X = \mu + \Sigma^{1/2} \rvar U$, we find that $\rvar X \dist \normaldist[n]{\mu}{\Sigma}$.
+\end{remark}
+
+\end{document}
